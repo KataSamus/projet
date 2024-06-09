@@ -3,18 +3,24 @@
 
 <?php
 require_once 'Model.php';
+require_once 'ModelPersonne.php';
+require_once 'ModelCompte.php';
 
 class ModelBanque {
 
-    private $id, $label, $pays;
+    private $id, $label, $pays, $prenom, $nom, $compte, $montant;
 
     // pas possible d'avoir 2 constructeurs
-    public function __construct($id = NULL, $label = NULL, $pays = NULL) {
+    public function __construct($id = NULL, $label = NULL, $pays = NULL, $prenom = NULL, $nom = NULL, $compte = NULL, $montant = NULL) {
         // valeurs nulles si pas de passage de parametres
         if (!is_null($id)) {
             $this->id = $id;
             $this->label = $label;
             $this->pays = $pays;
+            $this->prenom = $prenom;
+            $this->nom = $nom;
+            $this->compte = $compte;
+            $this->montant = $montant;
         }
     }
 
@@ -30,6 +36,22 @@ class ModelBanque {
         $this->annee = $pays;
     }
 
+    function setPrenom($prenom) {
+        $this->prenom = $prenom;
+    }
+
+    function setNom($nom) {
+        $this->nom = $nom;
+    }
+
+    function setCompte($compte) {
+        $this->compte = $compte;
+    }
+
+    function setMontant($montant) {
+        $this->montant = $montant;
+    }
+
     function getId() {
         return $this->id;
     }
@@ -40,6 +62,22 @@ class ModelBanque {
 
     function getPays() {
         return $this->pays;
+    }
+
+    function getPrenom() {
+        return $this->prenom;
+    }
+
+    function getNom() {
+        return $this->nom;
+    }
+
+    function getCompte() {
+        return $this->compte;
+    }
+
+    function getMontant() {
+        return $this->montant;
     }
     
 // retourne une liste des id
@@ -100,7 +138,7 @@ class ModelBanque {
     public static function getComptes($id) {
         try {
             $database = Model::getInstance();
-            $query = "SELECT personne.prenom as prenom, personne.nom as nom, banque.label as label, compte.label as cpt, compte.montant as montant "
+            $query = "SELECT personne.prenom as prenom, personne.nom as nom, banque.label as label, compte.label as compte, compte.montant as montant "
                     . "FROM compte "
                     . "JOIN banque ON compte.banque_id = banque.id "
                     . "JOIN personne ON compte.personne_id = personne.id "
