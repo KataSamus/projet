@@ -20,6 +20,8 @@ switch ($action) {
  case "banqueReadAll" :
  case "banqueCreate" :
  case "banqueCreated" :
+ case "banqueReadId" :
+ case "banqueReadComptes" :
   ControllerAdministrateur::$action();
   break;
  case "producteurReadAll" :

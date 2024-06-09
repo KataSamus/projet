@@ -97,16 +97,37 @@ class ModelBanque {
         }
     }
     
-    //---------------------------------------------
-    
-    
-
-    public static function getMany($query) {
+    public static function getComptes($id) {
         try {
             $database = Model::getInstance();
+            $query = "SELECT personne.prenom as prenom, personne.nom as nom, banque.label as label, compte.label as cpt, compte.montant as montant "
+                    . "FROM compte "
+                    . "JOIN banque ON compte.banque_id = banque.id "
+                    . "JOIN personne ON compte.personne_id = personne.id "
+                    . "WHERE banque_id = :id ";
             $statement = $database->prepare($query);
-            $statement->execute();
-            $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelVin");
+            $statement->execute([
+                'id' => $id
+            ]);
+            $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelBanque");
+            return $results;
+        } catch (PDOException $e) {
+            printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+            return NULL;
+        }
+    }
+    
+    //---------------------------------------------
+    
+    public static function getOne($id) {
+        try {
+            $database = Model::getInstance();
+            $query = "SELECT * FROM banque WHERE id = :id";
+            $statement = $database->prepare($query);
+            $statement->execute([
+                'id' => $id
+            ]);
+            $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelBanque");
             return $results;
         } catch (PDOException $e) {
             printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
@@ -114,15 +135,11 @@ class ModelBanque {
         }
     }
 
-
-    public static function getOne($id) {
+    public static function getMany($query) {
         try {
             $database = Model::getInstance();
-            $query = "select * from vin where id = :id";
             $statement = $database->prepare($query);
-            $statement->execute([
-                'id' => $id
-            ]);
+            $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelVin");
             return $results;
         } catch (PDOException $e) {

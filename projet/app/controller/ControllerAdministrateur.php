@@ -2,6 +2,7 @@
 <!-- ----- debut ControllerProducteur -->
 <?php
 require_once '../model/ModelPersonne.php';
+require_once '../model/ModelCompte.php';
 require_once '../model/ModelBanque.php';
 
 class ControllerAdministrateur {
@@ -37,32 +38,40 @@ class ControllerAdministrateur {
   require ($vue);
  }
  
+ // Affiche un formulaire pour sélectionner une banque qui existe
+ public static function banqueReadId() {
+  $results = ModelBanque::getAll();
+
+  // ----- Construction chemin de la vue
+  include 'config.php';
+  $vue = $root . '/app/view/banque/viewId.php';
+  require ($vue);
+ }
+ 
+ // Affiche les comptes d'une banque en particulier (id)
+ public static function banqueReadComptes() {
+  $banque_id = $_GET['id'];
+  $results = ModelBanque::getComptes($banque_id);
+
+  // ----- Construction chemin de la vue
+  include 'config.php';
+  $vue = $root . '/app/view/banque/viewAllComptes.php';
+  require ($vue);
+ }
+ 
  //----------------------------------------------------------------------
 
  
- 
- 
- // Affiche un formulaire pour sélectionner un id qui existe
- public static function producteurReadId() {
-  $results = ModelProducteur::getAllId();
+ // Affiche les comptes d'une banque en particulier (id)
+ public static function banqueReadOne() {
+  $banque_id = $_GET['id'];
+  $results = ModelBanque::getOne($banque_id);
 
   // ----- Construction chemin de la vue
   include 'config.php';
-  $vue = $root . '/app/view/producteur/viewId.php';
+  $vue = $root . '/app/view/banque/viewAll.php';
   require ($vue);
  }
-
- // Affiche un vin particulier (id)
- public static function producteurReadOne() {
-  $producteur_id = $_GET['id'];
-  $results = ModelProducteur::getOne($producteur_id);
-
-  // ----- Construction chemin de la vue
-  include 'config.php';
-  $vue = $root . '/app/view/producteur/viewAll.php';
-  require ($vue);
- }
-
  
  // --- Affichage sans doublons des régions
  public static function regionReadAll(){

@@ -1,5 +1,5 @@
 
-<!-- ----- debut ModelProducteur -->
+<!-- ----- debut ModelPersonne -->
 
 <?php
 require_once 'Model.php';
@@ -8,18 +8,18 @@ class ModelPersonne {
     public const ADMINISTRATEUR=0;
     public const CLIENT=1;
     
-//---------------------
-    
-    private $id, $nom, $prenom, $region;
+    private $id, $nom, $prenom, $statut, $login, $password;
 
  // pas possible d'avoir 2 constructeurs
- public function __construct($id = NULL, $nom = NULL, $prenom = NULL, $region = NULL) {
+ public function __construct($id = NULL, $nom = NULL, $prenom = NULL, $statut = NULL, $login = NULL, $password = NULL) {
   // valeurs nulles si pas de passage de parametres
   if (!is_null($id)) {
    $this->id = $id;
    $this->nom = $nom;
    $this->prenom = $prenom;
-   $this->region = $region;
+   $this->statut = $statut;
+   $this->login = $login;
+   $this->password = $password;
   }
  }
 
@@ -35,8 +35,16 @@ class ModelPersonne {
   $this->prenom = $prenom;
  }
 
- function setRegion($region) {
-  $this->region = $region;
+ function setStatut($statut) {
+  $this->statut = $statut;
+ }
+ 
+ function setLogin($login) {
+  $this->login = $login;
+ }
+ 
+ function setPassword($password) {
+  $this->password = $password;
  }
 
  function getId() {
@@ -51,9 +59,19 @@ class ModelPersonne {
   return $this->prenom;
  }
 
- function getRegion() {
-  return $this->region;
+ function getStatut() {
+  return $this->statut;
  }
+
+ function getLogin() {
+  return $this->login;
+ }
+
+ function getPassword() {
+  return $this->password;
+ }
+    
+//---------------------
  
  
 // retourne une liste des id
