@@ -25,6 +25,7 @@ switch ($action) { //rajouter des arguments en fonction de si on est client ou a
  case "clientReadAll" :
  case "adminReadAll" :
  case "compteReadAll" :
+ case "residenceReadAll" :
   ControllerAdministrateur::$action();
   break;
 // case "banqueReadAll" :

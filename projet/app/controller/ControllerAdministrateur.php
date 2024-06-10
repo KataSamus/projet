@@ -4,6 +4,7 @@
 require_once '../model/ModelPersonne.php';
 require_once '../model/ModelBanque.php';
 require_once '../model/ModelCompte.php';
+require_once '../model/ModelResidence.php';
 
 class ControllerAdministrateur {
 
@@ -85,7 +86,6 @@ class ControllerAdministrateur {
  }
  
  // --- Liste des comptes
- // Ici on poourrait simplifier le code en mettant un argument sur la fonction précédente
  public static function compteReadAll() {
   $results = ModelCompte::getAll();
   // ----- Construction chemin de la vue
@@ -93,6 +93,17 @@ class ControllerAdministrateur {
   $vue = $root . '/app/view/compte/viewAll.php';
   if (DEBUG){
     echo ("ControllerAdministrateur : compteReadAll : vue = $vue");
+  }
+  require ($vue);
+  
+ } // --- Liste des residences avec nom et prenom du propriétaire
+ public static function residenceReadAll() {
+  $results = ModelResidence::getAll();
+  // ----- Construction chemin de la vue
+  include 'config.php';
+  $vue = $root . '/app/view/residence/viewAll.php';
+  if (DEBUG){
+    echo ("ControllerAdministrateur : residenceReadAll : vue = $vue");
   }
   require ($vue);
  }

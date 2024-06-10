@@ -7,8 +7,6 @@ require_once 'ModelPersonne.php';
 require_once 'ModelBanque.php';
 
 class ModelCompte {
-    public const ADMINISTRATEUR=0;
-    public const CLIENT=1;
     
     private $id, $label, $montant, $banque_id, $personne_id, $banque, $pays, $prenom, $nom;
 
