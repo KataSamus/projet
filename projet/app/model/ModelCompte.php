@@ -3,8 +3,6 @@
 
 <?php
 require_once 'Model.php';
-require_once 'ModelPersonne.php';
-require_once 'ModelBanque.php';
 
 class ModelCompte {
     

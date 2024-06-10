@@ -1,17 +1,16 @@
-<!-- ----- debut ControllerCave -->
+<!-- ----- debut ControllerPatrimoine -->
 <?php
 class ControllerPatrimoine {
     
-    public static function mesPropositions() {
-    $results = ModelPatrimoine::getAll();
-    // ----- Construction chemin de la vue
-    include 'config.php';
-    $vue = $root . '/public/documentation/mesPropositions.php';
-    if (DEBUG){
-        echo ("ControllerProducteur : producteurReadAll : vue = $vue");
-    }
-    require ($vue);
-    }
+//    public static function mesPropositions() {
+//    // ----- Construction chemin de la vue
+//    include 'config.php';
+//    $vue = $root . '/public/documentation/mesPropositions.php';
+//    if (DEBUG){
+//        echo ("ControllerProducteur : producteurReadAll : vue = $vue");
+//    }
+//    require ($vue);
+//    }
     
     public static function patrimoineAccueil() {
     include 'config.php';
@@ -24,4 +23,4 @@ class ControllerPatrimoine {
     
 }
 ?>
-<!-- ----- fin ControllerCave -->
+<!-- ----- fin ControllerPatrimoine -->

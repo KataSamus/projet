@@ -4,6 +4,7 @@
 require ('../controller/ControllerPatrimoine.php');
 require ('../controller/ControllerAdministrateur.php');
 require ('../controller/ControllerClient.php');
+require ('../controller/ControllerConnexion.php');
 
 // --- récupération de l'action passée dans l'URL
 $query_string = $_SERVER['QUERY_STRING'];
@@ -37,6 +38,13 @@ switch ($action) { //rajouter des arguments en fonction de si on est client ou a
 //  break;
  case "producteurReadAll" :
   ControllerClient::$action();
+  break;
+ case "Login" :
+ case "Loged" :
+ case "AccountCreate" :
+ case "AccountCreated" :
+ case "Logout" :
+  ControllerConnexion::$action();
   break;
 
  // Tache par défaut

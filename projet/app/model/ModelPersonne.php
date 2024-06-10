@@ -86,7 +86,7 @@ class ModelPersonne {
   }
  }
  
- // retourne une liste des id admin
+ // retourne une liste des admin
  public static function getAllAdmin() {
   try {
    $database = Model::getInstance();
@@ -100,10 +100,31 @@ class ModelPersonne {
    return NULL;
   }
  }
+ 
+
+ 
     
 //---------------------
 
 
+ 
+ 
+  // retourne une liste de tous les comptes
+ public static function getAll() {
+  try {
+   $database = Model::getInstance();
+   $query = "SELECT * FROM personne";
+   $statement = $database->prepare($query);
+   $statement->execute();
+   $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelPersonne");
+   return $results;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
+ }
+ 
+ 
  public static function getMany($query) {
   try {
    $database = Model::getInstance();
@@ -117,19 +138,6 @@ class ModelPersonne {
   }
  }
 
- public static function getAll() {
-  try {
-   $database = Model::getInstance();
-   $query = "select * from producteur";
-   $statement = $database->prepare($query);
-   $statement->execute();
-   $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelProducteur");
-   return $results;
-  } catch (PDOException $e) {
-   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-   return NULL;
-  }
- }
 
  public static function getOne($id) {
   try {

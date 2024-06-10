@@ -2,22 +2,23 @@
 <!-- ----- début viewInsert -->
  
 <?php 
-require ($root . '/app/view/fragment/fragmentCaveHeader.html');
+require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
 ?>
 
 <body>
   <div class="container">
     <?php
-      include $root . '/app/view/fragment/fragmentCaveMenu.html';
-      include $root . '/app/view/fragment/fragmentCaveJumbotron.html';
+      include $root . '/app/view/fragment/fragmentPatrimoineMenu0.html';
+      include $root . '/app/view/fragment/fragmentPatrimoineJumbotron.html';
     ?> 
 
     <form role="form" method='get' action='router1.php'>
       <div class="form-group">
-        <input type="hidden" name='action' value='vinCreated'>        
-        <label class='w-25' for="id">cru : </label><input type="text" name='cru' size='75' value='Champagne de déconfinement'> <br/>                          
-        <label class='w-25' for="id">annee : </label><input type="number" name='annee' value='2021'> <br/> 
-        <label class='w-25' for="id">degre : </label><input type="number" step='any' name='degre' value='17.24'>        <br/>          
+        <input type="hidden" name='action' value='AccountCreated'>        
+        <label class='w-25' for="id">Nom : </label><input type="text" class="form-control" id="nom" name='nom' required><br/>                          
+        <label class='w-25' for="id">Prenom : </label><input type="text" class="form-control" id="prenom" name='prenom' required><br/> 
+        <label class='w-25' for="id">Login : </label><input type="text" class="form-control" id="login" name='login' required><br/>          
+        <label class='w-25' for="id">Password : </label><input type="text" class="form-control" id="password" name='password' required><br/>          
       </div>
       <p/>
        <br/> 
@@ -25,7 +26,7 @@ require ($root . '/app/view/fragment/fragmentCaveHeader.html');
     </form>
     <p/>
   </div>
-  <?php include $root . '/app/view/fragment/fragmentCaveFooter.html'; ?>
+  <?php include $root . '/app/view/fragment/fragmentPatrimoineFooter.html'; ?>
 
 <!-- ----- fin viewInsert -->
 

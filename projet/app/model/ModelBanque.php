@@ -3,8 +3,6 @@
 
 <?php
 require_once 'Model.php';
-require_once 'ModelPersonne.php';
-require_once 'ModelCompte.php';
 
 class ModelBanque {
 
@@ -154,70 +152,6 @@ class ModelBanque {
             return NULL;
         }
     }
-    
-    //---------------------------------------------
-    
-    public static function getOne($id) {
-        try {
-            $database = Model::getInstance();
-            $query = "SELECT * FROM banque WHERE id = :id";
-            $statement = $database->prepare($query);
-            $statement->execute([
-                'id' => $id
-            ]);
-            $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelBanque");
-            return $results;
-        } catch (PDOException $e) {
-            printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-            return NULL;
-        }
-    }
-
-    public static function getMany($query) {
-        try {
-            $database = Model::getInstance();
-            $statement = $database->prepare($query);
-            $statement->execute();
-            $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelVin");
-            return $results;
-        } catch (PDOException $e) {
-            printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-            return NULL;
-        }
-    }
-
-
-    public static function deleteVin($id) {
-        try {
-            $database = Model::getInstance();
-            $query = "select * from recolte where vin_id=:id";
-            $statement = $database->prepare($query);
-            $statement->execute(['id' => $id]);
-            $results = $statement->fetchAll();
-            if (empty($results)) {
-                $query = "delete from vin where id=:id";
-                $statement = $database->prepare($query);
-                $statement->execute(['id' => $id]);
-                return $id;
-            } else {
-                return "Problème de suppresion du vin. Il est dans la table récolte";
-            }
-        } catch (Exception $e) {
-            printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-            return -1;
-        }
-    }
-
-    public static function update() {
-        echo ("ModelVin : update() TODO ....");
-        return null;
-    }
-
-    public static function delete() {
-        echo ("ModelVin : delete() TODO ....");
-        return null;
-    }
-
-}
+ }
 ?>
-<!-- ----- fin ModelVin -->
+<!-- ----- fin ModelBanque -->
