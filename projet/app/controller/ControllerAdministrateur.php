@@ -1,9 +1,9 @@
 
-<!-- ----- debut ControllerProducteur -->
+<!-- ----- debut ControllerAdministrateur -->
 <?php
 require_once '../model/ModelPersonne.php';
-require_once '../model/ModelCompte.php';
 require_once '../model/ModelBanque.php';
+require_once '../model/ModelCompte.php';
 
 class ControllerAdministrateur {
 
@@ -59,6 +59,44 @@ class ControllerAdministrateur {
   require ($vue);
  }
  
+ // --- Liste des clients
+ public static function clientReadAll() {
+  $results = ModelPersonne::getAllClient();
+  // ----- Construction chemin de la vue
+  include 'config.php';
+  $vue = $root . '/app/view/administrateur/viewAll.php';
+  if (DEBUG){
+    echo ("ControllerAdministrateur : clientReadAll : vue = $vue");
+  }
+  require ($vue);
+ }
+ 
+ // --- Liste des administrateurs
+ // Ici on poourrait simplifier le code en mettant un argument sur la fonction précédente
+ public static function adminReadAll() {
+  $results = ModelPersonne::getAllAdmin();
+  // ----- Construction chemin de la vue
+  include 'config.php';
+  $vue = $root . '/app/view/administrateur/viewAll.php';
+  if (DEBUG){
+    echo ("ControllerAdministrateur : adminReadAll : vue = $vue");
+  }
+  require ($vue);
+ }
+ 
+ // --- Liste des comptes
+ // Ici on poourrait simplifier le code en mettant un argument sur la fonction précédente
+ public static function compteReadAll() {
+  $results = ModelCompte::getAll();
+  // ----- Construction chemin de la vue
+  include 'config.php';
+  $vue = $root . '/app/view/compte/viewAll.php';
+  if (DEBUG){
+    echo ("ControllerAdministrateur : compteReadAll : vue = $vue");
+  }
+  require ($vue);
+ }
+ 
  //----------------------------------------------------------------------
 
  
@@ -93,6 +131,6 @@ class ControllerAdministrateur {
  
 }
 ?>
-<!-- ----- fin ControllerProducteur -->
+<!-- ----- fin ControllerAdministrateur -->
 
 

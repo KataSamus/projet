@@ -70,24 +70,39 @@ class ModelPersonne {
  function getPassword() {
   return $this->password;
  }
-    
-//---------------------
  
- 
-// retourne une liste des id
- public static function getAllId() {
+ // retourne une liste des clients
+ public static function getAllClient() {
   try {
    $database = Model::getInstance();
-   $query = "select id from producteur";
+   $query = "SELECT * FROM personne WHERE statut=1";
    $statement = $database->prepare($query);
    $statement->execute();
-   $results = $statement->fetchAll(PDO::FETCH_COLUMN, 0);
+   $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelPersonne");
    return $results;
   } catch (PDOException $e) {
    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
    return NULL;
   }
  }
+ 
+ // retourne une liste des id admin
+ public static function getAllAdmin() {
+  try {
+   $database = Model::getInstance();
+   $query = "SELECT * FROM personne WHERE statut!=1";
+   $statement = $database->prepare($query);
+   $statement->execute();
+   $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelPersonne");
+   return $results;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
+ }
+    
+//---------------------
+
 
  public static function getMany($query) {
   try {

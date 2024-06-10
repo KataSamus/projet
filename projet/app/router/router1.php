@@ -16,14 +16,24 @@ parse_str($query_string, $param);
 $action = htmlspecialchars($param["action"]);
 
 // --- Liste des méthodes autorisées
-switch ($action) {
+switch ($action) { //rajouter des arguments en fonction de si on est client ou admin ?
  case "banqueReadAll" :
  case "banqueCreate" :
  case "banqueCreated" :
  case "banqueReadId" :
  case "banqueReadComptes" :
+ case "clientReadAll" :
+ case "adminReadAll" :
+ case "compteReadAll" :
   ControllerAdministrateur::$action();
   break;
+// case "banqueReadAll" :
+// case "banqueCreate" :
+// case "banqueCreated" :
+// case "banqueReadId" :
+// case "banqueReadComptes" :
+//  ControllerBanque::$action();
+//  break;
  case "producteurReadAll" :
   ControllerClient::$action();
   break;
