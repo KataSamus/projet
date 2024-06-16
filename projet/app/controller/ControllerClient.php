@@ -1,75 +1,104 @@
 
-<!-- ----- debut ControllerVin -->
+<!-- ----- debut ControllerClient -->
 <?php
 require_once '../model/ModelPersonne.php';
+require_once '../model/ModelCompte.php';
+require_once '../model/ModelBanque.php';
 
-class ControllerVin {
+class ControllerClient {
 
     // --- Liste des vins
-    public static function vinReadAll() {
-        $results = ModelVin::getAll();
+    public static function clientReadAllAccounts($id=1001) {
+        $results = ModelCompte::getClientCompte($id);
         // ----- Construction chemin de la vue
         include 'config.php';
-        $vue = $root . '/app/view/vin/viewAll.php';
-        if (DEBUG){
-            echo ("ControllerVin : vinReadAll : vue = $vue");
+        $vue = $root . '/app/view/compte/viewAllID.php';
+        require ($vue);
+    }
+
+    // Affiche le formulaire de transfert inter-compte si nb_compte > 1
+    public static function compteShowTransfertForm($id=1001) {
+        $nb_accounts = ModelPersonne::getNbAccounts($id);
+        $accounts = ModelCompte::getClientCompte($id);
+        include 'config.php';
+        if ($nb_accounts < 2) {
+            $msg_erreur = "Un nombre de 2 comptes minimum est requis pour effectuer cette opération.";
+            require ($vue_erreur);
+        } else {
+            $vue = $root . '/app/view/compte/viewTransfertForm.php';
+            require ($vue);
         }
-        require ($vue);
+    }
+    
+    // Effectue le transfert et affiche une page de confirmation
+    public static function compteTransfered() {
+        $compte1 = htmlspecialchars($_GET['compte1']);
+        $compte2 = htmlspecialchars($_GET['compte2']);
+        $montant = htmlspecialchars($_GET['montant']);
+        include 'config.php';
+        if ($compte1 == $compte2) {
+            $msg_erreur = "Vous ne pouvez pas choisir le même compte 2 fois lors d'un virement.";
+            require ($vue_erreur);
+        } elseif ($montant < 0) {
+            $msg_erreur = "Vous ne pouvez pas choisir un montant négatif.";
+            require ($vue_erreur);
+        // TODO : Faire la condition du montant max
+        } else {
+            $results = ModelPersonne::transfertInterAccount($compte1, $compte2);
+            $vue = $root . '/app/view/compte/viewTransfered.php';
+            require ($vue);
+        }
+        
     }
 
-    // Affiche un formulaire pour sélectionner un id qui existe
-    public static function vinReadId($args) {
-        $results = ModelVin::getAllId();
-
-        $target = $args["target"];
+    // Affiche le formulaire de creation d'un compte
+    public static function compteCreate() {
+        $results = ModelBanque::getAll();
         // ----- Construction chemin de la vue
         include 'config.php';
-        $vue = $root . '/app/view/vin/viewId.php';
-        require ($vue);
-    }
-
-    // Affiche un vin particulier (id)
-    public static function vinReadOne() {
-        $vin_id = $_GET['id'];
-        $results = ModelVin::getOne($vin_id);
-
-        // ----- Construction chemin de la vue
-        include 'config.php';
-        $vue = $root . '/app/view/vin/viewAll.php';
-        require ($vue);
-    }
-
-    // Affiche le formulaire de creation d'un vin
-    public static function vinCreate() {
-        // ----- Construction chemin de la vue
-        include 'config.php';
-        $vue = $root . '/app/view/vin/viewInsert.php';
-        require ($vue);
-    }
-
-    // Affiche un formulaire pour récupérer les informations d'un nouveau vin.
-    // La clé est gérée par le systeme et pas par l'internaute
-    public static function vinCreated() {
-        // ajouter une validation des informations du formulaire
-        $results = ModelVin::insert(
-                        htmlspecialchars($_GET['cru']), htmlspecialchars($_GET['annee']), htmlspecialchars($_GET['degre'])
-        );
-        // ----- Construction chemin de la vue
-        include 'config.php';
-        $vue = $root . '/app/view/vin/viewInserted.php';
+        $vue = $root . '/app/view/compte/viewInsert.php';
         require ($vue);
     }
     
-    public static function vinDeleted() {
-        $results = ModelVin::deleteVin(htmlspecialchars($_GET['id']));
-        
+    // Affiche la page d'info compte créé
+    public static function compteCreated() {
+        $label = htmlspecialchars($_GET['label']);
+        $banque_id = htmlspecialchars($_GET['banque_id']);
+        $compte_existe = ModelCompte::checkCompte($label, $banque_id);
         include 'config.php';
-        $vue = $root . '/app/view/vin/viewDeleted.php';
+        if (count($compte_existe) == 0) {
+            $msg_erreur = "Ce compte existe déjà.";
+            require ($vue_erreur);
+        } else {
+            // ----- Construction chemin de la vue
+            $vue = $root . '/app/view/compte/viewInserted.php';
+            require ($vue);
+        }
+    }
+    
+    // Affiche la liste des résidences d'un id particulier
+    public static function clientReadAllResidences($id=1001) {
+        $results = ModelPersonne::getResidences($id);
+        // ----- Construction chemin de la vue
+        include 'config.php';
+        $vue = $root . '/app/view/residence/viewAllID.php';
         require ($vue);
     }
-
+    
+    // Affiche le patrimoine d'un id particulier
+    public static function clientReadPatrimoine($id=1001) {
+        $liste_comptes = ModelCompte::getClientCompte($id);
+        $liste_residences = ModelPersonne::getResidences($id);
+        // ----- Construction chemin de la vue
+        include 'config.php';
+        $vue = $root . '/app/view/client/viewBilanPatrimoine.php';
+        require ($vue);
+    }
+    
+    // Affiche le formulaire pour acheter une résidence
+    public static function clientBuyResidence() {
+        
+    }
 }
 ?>
-<!-- ----- fin ControllerVin -->
-
-
+<!-- ----- fin ControllerClient -->

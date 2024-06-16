@@ -6,6 +6,7 @@ require ('../controller/ControllerAdministrateur.php');
 require ('../controller/ControllerClient.php');
 require ('../controller/ControllerConnexion.php');
 
+
 // --- récupération de l'action passée dans l'URL
 $query_string = $_SERVER['QUERY_STRING'];
 
@@ -14,7 +15,15 @@ $query_string = $_SERVER['QUERY_STRING'];
 parse_str($query_string, $param);
 
 // --- $action contient le nom de la méthode statique recherchée
-$action = htmlspecialchars($param["action"]);
+// 
+// Ancienne méthode
+//$action = htmlspecialchars($param["action"]);
+
+$action = $param["action"];
+
+unset($param["action"]);
+
+$args = $param;
 
 // --- Liste des méthodes autorisées
 switch ($action) { //rajouter des arguments en fonction de si on est client ou admin ?
@@ -27,7 +36,7 @@ switch ($action) { //rajouter des arguments en fonction de si on est client ou a
  case "adminReadAll" :
  case "compteReadAll" :
  case "residenceReadAll" :
-  ControllerAdministrateur::$action();
+  ControllerAdministrateur::$action($args);
   break;
 // case "banqueReadAll" :
 // case "banqueCreate" :
@@ -36,7 +45,14 @@ switch ($action) { //rajouter des arguments en fonction de si on est client ou a
 // case "banqueReadComptes" :
 //  ControllerBanque::$action();
 //  break;
- case "producteurReadAll" :
+ case "clientReadAllAccounts" :
+ case "compteShowTransfertForm" :
+ case "compteTransfered" :
+ case "compteCreate" :
+ case "compteCreated" :
+ case "clientReadAllResidences" :
+ case "clientReadPatrimoine" :
+ case "clientBuyResidence" :
   ControllerClient::$action();
   break;
  case "Login" :
@@ -50,7 +66,8 @@ switch ($action) { //rajouter des arguments en fonction de si on est client ou a
  // Tache par défaut
  default:
   $action = "patrimoineAccueil";
-  ControllerPatrimoine::$action();
+  ControllerPatrimoine::$action($args);
+  break;
 }
 ?>
 <!-- ----- Fin Router1 -->

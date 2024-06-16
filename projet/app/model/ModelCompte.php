@@ -3,6 +3,8 @@
 
 <?php
 require_once 'Model.php';
+require_once 'ModelPersonne.php';
+require_once 'ModelBanque.php';
 
 class ModelCompte {
     
@@ -105,6 +107,41 @@ class ModelCompte {
    $statement = $database->prepare($query);
    $statement->execute();
    $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelCompte");
+   return $results;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
+ }
+ 
+ // retourne une liste des comptes d'un id particulier
+ public static function getClientCompte($id) {
+  try {
+   $database = Model::getInstance();
+   $query = "SELECT label AS banque, montant FROM compte JOIN personne WHERE compte.personne_id = personne.id AND personne.id = ?";
+   $statement = $database->prepare($query);
+   $statement->bindParam(1, $id, PDO::PARAM_INT);
+   $statement->execute();
+   $results = $statement->fetchAll();
+   printf("C'est ok !");
+   return $results;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
+ }
+ 
+ // check si le compte existe
+ public static function checkCompte($label, $banque_id) {
+  try {
+   $database = Model::getInstance();
+   $query = "SELECT * FROM compte WHERE label=':label' AND banque_id = :banque_id;";
+   $statement = $database->prepare($query);
+   $statement->execute([
+    'label' => $label,
+    'banque_id' => $banque_id
+   ]);
+   $results = $statement->fetchAll();
    return $results;
   } catch (PDOException $e) {
    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());

@@ -99,26 +99,38 @@ class ModelConnexion {
  
  public static function connect($login, $password) {
   try {
+   session_start();
    $database = Model::getInstance();
 
    // recherche de la valeur de la clé = max(id) + 1
-   $query = "SELECT password FROM personne WHERE login=:login";
+   $query = "SELECT password,statut FROM personne WHERE login=:login";
    $statement = $database->prepare($query);
    $statement->execute([
      'login' => $login,
    ]);
    
-   if($statement==$password){
-      $_SESSION['login'] = $login;
-   }   
+   // Récupération du résultat
+   $result = $statement->fetch(PDO::FETCH_ASSOC);
+   
+   //On vérifie que l'utilisateur est bien dans la base de donnée avant de vérifier que c'est le bon password
+   if ($result) {
+       if($result['password']==$password){
+          $_SESSION['login'] = $login;
+          $_SESSION['statut'] = $result['statut'];
+          return 1;
+       }
+   }else{
+       return 0;
+   }
   } catch (PDOException $e) {
-   //printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-   return -1;
+    //printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+    return -1;
   }
  }
  
   public static function disconnect() {
-    session_unset();
+    session_start();
+    session_destroy();
  }
  
 }

@@ -1,22 +1,23 @@
 
-<!-- ----- début viewId -->
+<!-- ----- début viewInsert -->
+ 
 <?php 
 require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
 ?>
 
 <body>
   <div class="container">
-      <?php
+    <?php
       include $root . '/app/view/fragment/fragmentPatrimoineMenu.php';
       include $root . '/app/view/fragment/fragmentPatrimoineJumbotron.html';
-
-      // $results contient un tableau avec la liste des clés.
-      ?>
+    ?> 
 
     <form role="form" method='get' action='router1.php'>
       <div class="form-group">
-        <input type="hidden" name='action' value='banqueReadComptes'>
-        <label for="id">Banque : </label> <select class="form-control" id='id' name='id' style="width: 50%">
+        <input type="hidden" name='action' value='compteCreated'>
+        <label class='w-25' for="label">Label</label><input type="text" name='label' value=''><br/>                    
+        <label class='w-25' for="montant">Montant</label><input type="text" name='montant' value=''><br/>
+        <label for="id">Sélectionnez une banque</label> <select class="form-control" id='banque' name='banque' style="width: 50%">
             <?php
             foreach ($results as $label) {
              echo ("<option value=" . $label->getId() . ">" . $label->getLabel() . "</option>");
@@ -24,12 +25,12 @@ require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
             ?>
         </select>
       </div>
-      <p/><br/>
-      <button class="btn btn-primary" type="submit">Submit form</button>
+      <p/>
+       <br/> 
+      <button class="btn btn-primary" type="submit">Go</button>
     </form>
     <p/>
   </div>
-
   <?php include $root . '/app/view/fragment/fragmentPatrimoineFooter.html'; ?>
 
-  <!-- ----- fin viewId -->
+<!-- ----- fin viewInsert -->

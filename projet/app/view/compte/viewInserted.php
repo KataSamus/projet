@@ -1,7 +1,7 @@
 
 <!-- ----- début viewInserted -->
 <?php
-require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
+require ($root . '/app/view/fragment/fragmentCavePatrimoineHeader.html');
 ?>
 
 <body>
@@ -12,17 +12,14 @@ require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
     ?>
     <!-- ===================================================== -->
     <?php
-    if ($results!=-1) { //On vérifie que la banque n'est pas déjà dans la base de données
-     echo ("<h3>La nouvelle banque a été ajoutée </h3>");
-     echo("<ul>");
+
+     echo ("<h3>Le nouveau compte a été ajouté </h3>");
+     /**echo("<ul>");
      echo ("<li>id = " . $results . "</li>");
-     echo ("<li>label = " . $_GET['label'] . "</li>");
-     echo ("<li>pays = " . $_GET['pays'] . "</li>");
-     echo("</ul>");
-    } else {
-     echo ("<h3>Problème d'insertion de la Banque</h3>");
-     echo ("Ne peut pas être ajoutée : " . $_GET['label']);
-    }
+     echo ("<li>cru = " . $_GET['cru'] . "</li>");
+     echo ("<li>annee = " . $_GET['annee'] . "</li>");
+     echo ("<li>degre = " . $_GET['degre'] . "</li>");
+     echo("</ul>");**/
 
     echo("</div>");
     

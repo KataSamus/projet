@@ -5,6 +5,8 @@
 require_once 'Model.php';
 
 class ModelPersonne {
+    
+    //Ces constantes ne servent pour le moment absolument à rien
     public const ADMINISTRATEUR=0;
     public const CLIENT=1;
     
@@ -100,128 +102,38 @@ class ModelPersonne {
    return NULL;
   }
  }
- 
-
- 
     
-//---------------------
-
-
- 
- 
-  // retourne une liste de tous les comptes
- public static function getAll() {
+// retourne le nombre comptes d'un id particulier
+ public static function getNbAccounts($id) {
   try {
    $database = Model::getInstance();
-   $query = "SELECT * FROM personne";
+   $query = "SELECT count(*) FROM compte JOIN personne WHERE compte.personne_id = personne.id AND personne.id = ?";
    $statement = $database->prepare($query);
-   $statement->execute();
-   $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelPersonne");
-   return $results;
-  } catch (PDOException $e) {
-   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-   return NULL;
-  }
- }
- 
- 
- public static function getMany($query) {
-  try {
-   $database = Model::getInstance();
-   $statement = $database->prepare($query);
-   $statement->execute();
-   $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelProducteur");
-   return $results;
-  } catch (PDOException $e) {
-   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-   return NULL;
-  }
- }
-
-
- public static function getOne($id) {
-  try {
-   $database = Model::getInstance();
-   $query = "select * from producteur where id = :id";
-   $statement = $database->prepare($query);
-   $statement->execute([
-     'id' => $id
-   ]);
-   $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelProducteur");
-   return $results;
-  } catch (PDOException $e) {
-   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-   return NULL;
-  }
- }
-
- public static function insert($nom, $prenom, $region) {
-  try {
-   $database = Model::getInstance();
-
-   // recherche de la valeur de la clé = max(id) + 1
-   $query = "select max(id) from producteur";
-   $statement = $database->query($query);
-   $tuple = $statement->fetch();
-   $id = $tuple['0'];
-   $id++;
-
-   // ajout d'un nouveau tuple;
-   $query = "insert into producteur value (:id, :nom, :prenom, :region)";
-   $statement = $database->prepare($query);
-   $statement->execute([
-     'id' => $id,
-     'nom' => $nom,
-     'prenom' => $prenom,
-     'region' => $region
-   ]);
-   return $id;
-  } catch (PDOException $e) {
-   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-   return -1;
-  }
- }
- 
- public static function getAllRegion() {
-  try {
-  $database = Model::getInstance();
-
-  $query = "select distinct region from producteur";
-  $statement = $database->prepare($query);
-  $statement->execute();
-  $results = $statement->fetchAll(PDO::FETCH_CLASS, "ModelProducteur");
-  return $results;
-  } catch (Exception $e) {
-  printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-  return -1;
-  }
- }
-
- public static function getNbProdByRegion() {
-  try {
-   $database = Model::getInstance();
-
-   $query = "select region,count(*) from producteur group by region";
-   $statement = $database->prepare($query);
+   $statement->bindParam(1, $id, PDO::PARAM_INT);
    $statement->execute();
    $results = $statement->fetchAll();
    return $results;
-  } catch (Exception $e) {
+  } catch (PDOException $e) {
    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
-   return -1;
+   return NULL;
   }
  }
-
- public static function update() {
-  echo ("ModelProducteur : update() TODO ....");
-  return null;
- }
-
- public static function delete() {
-  echo ("ModelProducteur : delete() TODO ....");
-  return null;
+ 
+ // retourne la liste des résidences d'un id particulier
+ public static function getResidences($id) {
+  try {
+   $database = Model::getInstance();
+   $query = "SELECT label AS adresse, ville, prix FROM residence WHERE personne_id = ?";
+   $statement = $database->prepare($query);
+   $statement->bindParam(1, $id, PDO::PARAM_INT);
+   $statement->execute();
+   $results = $statement->fetchAll();
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
  }
 
 }
 ?>
-<!-- ----- fin ModelProducteur -->
+<!-- ----- fin ModelPersonne -->
