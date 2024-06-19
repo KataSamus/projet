@@ -97,13 +97,14 @@ class ModelConnexion {
   }
  }
  
+ // connecte l'utilisateur et définit les variables de session
  public static function connect($login, $password) {
   try {
    session_start();
    $database = Model::getInstance();
 
    // recherche de la valeur de la clé = max(id) + 1
-   $query = "SELECT password,statut FROM personne WHERE login=:login";
+   $query = "SELECT password,statut,id,nom,prenom FROM personne WHERE login=:login";
    $statement = $database->prepare($query);
    $statement->execute([
      'login' => $login,
@@ -117,6 +118,9 @@ class ModelConnexion {
        if($result['password']==$password){
           $_SESSION['login'] = $login;
           $_SESSION['statut'] = $result['statut'];
+          $_SESSION['id'] = $result['id'];
+          $_SESSION['nom'] = $result['nom'];
+          $_SESSION['prenom'] = $result['prenom'];
           return 1;
        }
    }else{

@@ -8,8 +8,8 @@ require_once '../model/ModelBanque.php';
 class ControllerClient {
 
     // --- Liste des vins
-    public static function clientReadAllAccounts($id=1001) {
-        $results = ModelCompte::getClientCompte($id);
+    public static function clientReadAllAccounts() {
+        $results = ModelCompte::getClientCompte();
         // ----- Construction chemin de la vue
         include 'config.php';
         $vue = $root . '/app/view/compte/viewAllID.php';
@@ -17,9 +17,9 @@ class ControllerClient {
     }
 
     // Affiche le formulaire de transfert inter-compte si nb_compte > 1
-    public static function compteShowTransfertForm($id=1001) {
-        $nb_accounts = ModelPersonne::getNbAccounts($id);
-        $accounts = ModelCompte::getClientCompte($id);
+    public static function compteShowTransfertForm() {
+        $nb_accounts = ModelPersonne::getNbAccounts();
+        $accounts = ModelCompte::getClientCompte();
         include 'config.php';
         if ($nb_accounts < 2) {
             $msg_erreur = "Un nombre de 2 comptes minimum est requis pour effectuer cette opération.";
@@ -43,8 +43,11 @@ class ControllerClient {
             $msg_erreur = "Vous ne pouvez pas choisir un montant négatif.";
             require ($vue_erreur);
         // TODO : Faire la condition du montant max
+        } elseif ($montant > $montant_max) {
+            $msg_erreur = "Vous ne possédez pas cette somme sur le compte de retrait.";
+            require ($vue_erreur);
         } else {
-            $results = ModelPersonne::transfertInterAccount($compte1, $compte2);
+            $results = ModelCompte::transertIntoAccount($montant, $compte1, $compte2);
             $vue = $root . '/app/view/compte/viewTransfered.php';
             require ($vue);
         }
@@ -77,8 +80,8 @@ class ControllerClient {
     }
     
     // Affiche la liste des résidences d'un id particulier
-    public static function clientReadAllResidences($id=1001) {
-        $results = ModelPersonne::getResidences($id);
+    public static function clientReadAllResidences() {
+        $results = ModelPersonne::getResidences();
         // ----- Construction chemin de la vue
         include 'config.php';
         $vue = $root . '/app/view/residence/viewAllID.php';
@@ -86,9 +89,9 @@ class ControllerClient {
     }
     
     // Affiche le patrimoine d'un id particulier
-    public static function clientReadPatrimoine($id=1001) {
-        $liste_comptes = ModelCompte::getClientCompte($id);
-        $liste_residences = ModelPersonne::getResidences($id);
+    public static function clientReadPatrimoine() {
+        $liste_comptes = ModelCompte::getClientCompte();
+        $liste_residences = ModelPersonne::getResidences();
         // ----- Construction chemin de la vue
         include 'config.php';
         $vue = $root . '/app/view/client/viewBilanPatrimoine.php';
@@ -96,8 +99,16 @@ class ControllerClient {
     }
     
     // Affiche le formulaire pour acheter une résidence
-    public static function clientBuyResidence() {
-        
+    public static function clientShowResidenceSelect() {
+        $liste_residences = ModelPersonne::getOtherResidences();
+        include 'config.php';
+        if (count($liste_residences) == 0) {
+            $msg_erreur = "Vous possédez déjà toutes les résidences listées sur notre site.";
+            require ($vue_erreur);
+        } else {
+            $vue = $root . '/app/view/residence/viewResidenceSelect.php';
+            require ($vue);
+        }
     }
 }
 ?>

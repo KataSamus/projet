@@ -2,6 +2,7 @@
 <!-- ----- debut ModelCompte -->
 
 <?php
+session_start();
 require_once 'Model.php';
 require_once 'ModelPersonne.php';
 require_once 'ModelBanque.php';
@@ -115,15 +116,15 @@ class ModelCompte {
  }
  
  // retourne une liste des comptes d'un id particulier
- public static function getClientCompte($id) {
+ public static function getClientCompte() {
   try {
+   $id = $_SESSION["id"];
    $database = Model::getInstance();
-   $query = "SELECT label AS banque, montant FROM compte JOIN personne WHERE compte.personne_id = personne.id AND personne.id = ?";
+   $query = "SELECT compte.id, banque.label as banque, compte.label as label, montant FROM compte JOIN personne ON compte.personne_id = personne.id JOIN banque ON banque.id = compte.banque_id WHERE personne.id = :id";
    $statement = $database->prepare($query);
-   $statement->bindParam(1, $id, PDO::PARAM_INT);
+   $statement->bindParam('id', $id, PDO::PARAM_INT);
    $statement->execute();
    $results = $statement->fetchAll();
-   printf("C'est ok !");
    return $results;
   } catch (PDOException $e) {
    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
@@ -135,7 +136,7 @@ class ModelCompte {
  public static function checkCompte($label, $banque_id) {
   try {
    $database = Model::getInstance();
-   $query = "SELECT * FROM compte WHERE label=':label' AND banque_id = :banque_id;";
+   $query = "SELECT * FROM compte WHERE label=':label' AND banque_id = :banque_id";
    $statement = $database->prepare($query);
    $statement->execute([
     'label' => $label,
@@ -149,6 +150,39 @@ class ModelCompte {
   }
  }
  
+ // retourne le montant max que l'on peut retirer du compte, c'est-à-dire son montant
+ public static function checkMontant($compte_id) {
+  try {
+   $database = Model::getInstance();
+   $query = "SELECT montant as montant_max FROM compte WHERE id = :compte_id";
+   $statement = $database->prepare($query);
+   $statement->bindParam('compte_id', $compte_id, PDO::PARAM_INT);
+   $statement->execute();
+   $results = $statement->fetchAll();
+   return $results;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
+ }
+ 
+ // Transferre un certain montant du compte de retrait au compte de dépôt
+ public static function transertIntoAccount($montant, $id1, $id2) {
+  try {
+   $database = Model::getInstance();
+   $query = "UPDATE compte SET montant = montant - :montant WHERE id = :id_retrait; UPDATE compte SET montant = montant + :montant WHERE id = :id_depot";
+   $statement = $database->prepare($query);
+   $statement->bindParam('montant', $montant, PDO::PARAM_INT);
+   $statement->bindParam('id_retrait', $id1, PDO::PARAM_INT);
+   $statement->bindParam('id_depot', $id2, PDO::PARAM_INT);
+   $statement->execute();
+   $results = $statement->fetchAll();
+   return $results;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
+ }
 }
 ?>
 

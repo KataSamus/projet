@@ -52,7 +52,7 @@ switch ($action) { //rajouter des arguments en fonction de si on est client ou a
  case "compteCreated" :
  case "clientReadAllResidences" :
  case "clientReadPatrimoine" :
- case "clientBuyResidence" :
+ case "clientShowResidenceSelect" :
   ControllerClient::$action();
   break;
  case "Login" :

@@ -17,7 +17,7 @@ require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
         <input type="hidden" name='action' value='compteCreated'>
         <label class='w-25' for="label">Label</label><input type="text" name='label' value=''><br/>                    
         <label class='w-25' for="montant">Montant</label><input type="text" name='montant' value=''><br/>
-        <label for="id">Sélectionnez une banque</label> <select class="form-control" id='banque' name='banque' style="width: 50%">
+        <label for="banque">Sélectionnez une banque</label> <select class="form-control" id='banque' name='banque' style="width: 50%">
             <?php
             foreach ($results as $label) {
              echo ("<option value=" . $label->getId() . ">" . $label->getLabel() . "</option>");

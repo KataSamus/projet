@@ -9,9 +9,9 @@ if (!defined('DEBUG')) {
 
 // ===============
 // Configuration de la base de données sur dev-isi
-$dsn = 'mysql:dbname=beaudoil;host=localhost;charset=utf8';
-$username = 'beaudoil';
-$password = 'AYUsIwMD';
+$dsn = 'mysql:dbname=combenoe;host=localhost;charset=utf8';
+$username = 'combenoe';
+$password = 'PMuNUYJi';
 
 if (!defined('LOCAL')) {
     define('LOCAL', FALSE);
@@ -26,6 +26,9 @@ if (LOCAL) {
  
 // chemin absolu vers le répertoire du projet SUR DEV-ISI 
 $root = dirname(dirname(__DIR__)) . "/";
+
+// chemin du fichier d'affichage d'une erreur
+$vue_erreur = $root . "/app/view/others/viewError.php";
 
 
 if (DEBUG) {

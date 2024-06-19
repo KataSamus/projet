@@ -5,8 +5,6 @@
 require_once 'Model.php';
 
 class ModelPersonne {
-    
-    //Ces constantes ne servent pour le moment absolument à rien
     public const ADMINISTRATEUR=0;
     public const CLIENT=1;
     
@@ -103,13 +101,14 @@ class ModelPersonne {
   }
  }
     
-// retourne le nombre comptes d'un id particulier
- public static function getNbAccounts($id) {
+ // retourne le nombre comptes d'un id particulier
+ public static function getNbAccounts() {
   try {
+   $id = $_SESSION["id"];
    $database = Model::getInstance();
-   $query = "SELECT count(*) FROM compte JOIN personne WHERE compte.personne_id = personne.id AND personne.id = ?";
+   $query = "SELECT count(*) FROM compte JOIN personne ON compte.personne_id = personne.id WHERE personne.id = :id";
    $statement = $database->prepare($query);
-   $statement->bindParam(1, $id, PDO::PARAM_INT);
+   $statement->bindParam('id', $id, PDO::PARAM_INT);
    $statement->execute();
    $results = $statement->fetchAll();
    return $results;
@@ -120,14 +119,33 @@ class ModelPersonne {
  }
  
  // retourne la liste des résidences d'un id particulier
- public static function getResidences($id) {
+ public static function getResidences() {
   try {
+   $id = $_SESSION["id"];
    $database = Model::getInstance();
-   $query = "SELECT label AS adresse, ville, prix FROM residence WHERE personne_id = ?";
+   $query = "SELECT id, label AS adresse, ville, prix FROM residence WHERE personne_id = :id";
    $statement = $database->prepare($query);
-   $statement->bindParam(1, $id, PDO::PARAM_INT);
+   $statement->bindParam('id', $id, PDO::PARAM_INT);
    $statement->execute();
    $results = $statement->fetchAll();
+   return $results;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
+ }
+ 
+ // retourne la liste des résidences n'appartenant pas à un id particulier
+ public static function getOtherResidences() {
+  try {
+   $id = $_SESSION["id"];
+   $database = Model::getInstance();
+   $query = "SELECT id, label AS adresse, ville, prix FROM residence WHERE personne_id != :id";
+   $statement = $database->prepare($query);
+   $statement->bindParam('id', $id, PDO::PARAM_INT);
+   $statement->execute();
+   $results = $statement->fetchAll();
+   return $results;
   } catch (PDOException $e) {
    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
    return NULL;

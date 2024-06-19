@@ -15,7 +15,7 @@ class ControllerPatrimoine {
     
     public static function patrimoineAccueil() {
         include 'config.php';
-        $vue = $root . '/app/view/viewPatrimoineAccueil.php';
+        $vue = $root . '/app/view/others/viewPatrimoineAccueil.php';
         if (DEBUG){
             echo ("ControllerPatrimoine : patrimoineAccueil : vue = $vue");
         }
