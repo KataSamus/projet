@@ -115,7 +115,7 @@ class ModelConnexion {
    
    //On vérifie que l'utilisateur est bien dans la base de donnée avant de vérifier que c'est le bon password
    if ($result) {
-       if($result['password']==$password){
+       if ($result['password']==$password) {
           $_SESSION['login'] = $login;
           $_SESSION['statut'] = $result['statut'];
           $_SESSION['id'] = $result['id'];
@@ -123,7 +123,7 @@ class ModelConnexion {
           $_SESSION['prenom'] = $result['prenom'];
           return 1;
        }
-   }else{
+   } else {
        return 0;
    }
   } catch (PDOException $e) {

@@ -16,7 +16,7 @@ require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
       <div class="form-group">
         <input type="hidden" name='action' value='Loged'> 
         <label class='w-25' for="id">Login : </label><input type="text" class="form-control" id="login" name='login' required><br/>          
-        <label class='w-25' for="id">Password : </label><input type="text" class="form-control" id="password" name='password' required><br/>          
+        <label class='w-25' for="id">Password : </label><input type="password" class="form-control" id="password" name='password' required><br/>          
       </div>
       <p/>
        <br/> 

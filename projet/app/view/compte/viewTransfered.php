@@ -1,5 +1,5 @@
 
-<!-- ----- début viewInserted -->
+<!-- ----- début viewTransfered -->
 <?php
 require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
 ?>
@@ -13,7 +13,7 @@ require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
     <!-- ===================================================== -->
     <?php
 
-     echo ("<h3>Le nouveau compte a été ajouté </h3>");
+     echo ("<h3>Le virement a bien été effectué</h3>");
      /**echo("<ul>");
      echo ("<li>id = " . $results . "</li>");
      echo ("<li>cru = " . $_GET['cru'] . "</li>");
@@ -25,7 +25,7 @@ require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
     
     include $root . '/app/view/fragment/fragmentPatrimoineFooter.html';
     ?>
-    <!-- ----- fin viewInserted -->    
+    <!-- ----- fin viewTransfered -->    
 
     
     

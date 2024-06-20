@@ -102,16 +102,19 @@ class ModelPersonne {
  }
     
  // retourne le nombre comptes d'un id particulier
- public static function getNbAccounts() {
+ public static function getNbAccounts($id, bool $is_other) {
   try {
-   $id = $_SESSION["id"];
+   if (!$is_other) {
+    $id = $_SESSION["id"];
+   }
    $database = Model::getInstance();
    $query = "SELECT count(*) FROM compte JOIN personne ON compte.personne_id = personne.id WHERE personne.id = :id";
    $statement = $database->prepare($query);
    $statement->bindParam('id', $id, PDO::PARAM_INT);
    $statement->execute();
-   $results = $statement->fetchAll();
-   return $results;
+   $results = $statement->fetchColumn();
+   $count = $results;
+   return $count;
   } catch (PDOException $e) {
    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
    return NULL;

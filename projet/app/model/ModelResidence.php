@@ -1,5 +1,5 @@
 
-<!-- ----- debut ModelCompte -->
+<!-- ----- debut ModelResidence -->
 
 <?php
 require_once 'Model.php';
@@ -29,7 +29,7 @@ class ModelResidence {
   $this->id = $id;
  }
 
- function setResidence($label) {
+ function setLabel($label) {
   $this->label = $label;
  }
 
@@ -56,7 +56,7 @@ class ModelResidence {
   return $this->id;
  }
 
- function getResidence() {
+ function getLabel() {
   return $this->label;
  }
 
@@ -96,7 +96,73 @@ class ModelResidence {
   }
  }
  
+ // retourne le rpix de la résidence à l'id = id_res
+ public static function getPrice($id_res) {
+  try {
+   $database = Model::getInstance();
+   $query = "SELECT prix FROM residence WHERE id=:id_res";
+   $statement = $database->prepare($query);
+   $statement->bindParam('id_res', $id_res, PDO::PARAM_INT);
+   $statement->execute();
+   $results = $statement->fetchColumn();
+   return $results;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
+ }
+ 
+ // retourne l'id de la personne possédant la résidence à l'id = id_res
+ public static function getResidence($id_res) {
+  try {
+   $database = Model::getInstance();
+   $query = "SELECT * FROM residence WHERE id=:id_res";
+   $statement = $database->prepare($query);
+   $statement->bindParam('id_res', $id_res, PDO::PARAM_INT);
+   $statement->setFetchMode(PDO::FETCH_CLASS, 'ModelResidence');
+   $statement->execute();
+   $results = $statement->fetch();
+   return $results;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return NULL;
+  }
+ }
+ 
+ // Procède au transfert d'argent lors de l'achat d'une résidence
+ public static function buyResidence($prix, $id_acheteur, $id_vendeur) {
+  try {
+   $database = Model::getInstance();
+   $query_transfert_argent = "UPDATE compte SET montant = montant - :prix WHERE id = :id_acheteur; UPDATE compte SET montant = montant + :prix WHERE id = :id_vendeur";
+   $statement = $database->prepare($query_transfert_argent);
+   $statement->bindParam('prix', $prix, PDO::PARAM_INT);
+   $statement->bindParam('id_acheteur', $id_acheteur, PDO::PARAM_INT);
+   $statement->bindParam('id_vendeur', $id_vendeur, PDO::PARAM_INT);
+   $statement->execute();
+   return 1;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return -1;
+  }
+ }
+ 
+ // Procède à l'achat d'une résidence
+ public static function transfertResidence($id_res) {
+  try {
+   $id_acheteur = $_SESSION['id'];
+   $database = Model::getInstance();
+   $query_transfert_residence = "UPDATE residence SET personne_id = :id_acheteur WHERE id = :id_res";
+   $statement = $database->prepare($query_transfert_residence);
+   $statement->bindParam('id_acheteur', $id_acheteur, PDO::PARAM_INT);
+   $statement->bindParam('id_res', $id_res, PDO::PARAM_INT);
+   $statement->execute();
+   return 1;
+  } catch (PDOException $e) {
+   printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+   return -1;
+  }
+ }
 }
 ?>
 
-<!-- ------- Fin ModelCompte------>
+<!-- ------- Fin ModelResidence ------>

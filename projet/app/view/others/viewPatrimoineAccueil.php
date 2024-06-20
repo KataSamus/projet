@@ -8,7 +8,7 @@
     include $root . '/app/view/fragment/fragmentPatrimoineJumbotron.html';
     ?>
   </div>
-  
+    
   <?php
   include $root . '/app/view/fragment/fragmentPatrimoineFooter.html';
   ?>

@@ -15,7 +15,7 @@ require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
     <form role="form" method='get' action='router1.php'>
       <div class="form-group">
         <input type="hidden" name='action' value='compteTransfered'>        
-        <label class='w-25' for="compte1">Sélectionnez le compte de retrait : </label> <select class="form-control" id='compte1' name='compte1' style="width: 100px">
+        <label class='w-25' for="compte1">Sélectionnez le compte de retrait : </label> <select class="form-control" id='compte1' name='compte1' style="width: 300px">
             <?php
             foreach ($accounts as $compte) {
                 printf("<option value='%s'>%s</option>", $compte['id'], $compte['label']);
@@ -29,7 +29,7 @@ require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
             }
             ?>
         </select><br/>
-        <label class='w-25' for="montant">Montant</label><input type="number" step='any' name='montant' id='montant' value='100'><br/>          
+        <label class='w-25' for="montant">Montant</label><input type="number" step='any' name='montant' id='montant' value='100' required><br/>          
       </div>
       <p/>
        <br/> 

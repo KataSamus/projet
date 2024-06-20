@@ -116,9 +116,11 @@ class ModelCompte {
  }
  
  // retourne une liste des comptes d'un id particulier
- public static function getClientCompte() {
+ public static function getClientCompte($id, bool $is_other) {
   try {
-   $id = $_SESSION["id"];
+   if (!$is_other) {
+    $id = $_SESSION["id"];
+   }
    $database = Model::getInstance();
    $query = "SELECT compte.id, banque.label as banque, compte.label as label, montant FROM compte JOIN personne ON compte.personne_id = personne.id JOIN banque ON banque.id = compte.banque_id WHERE personne.id = :id";
    $statement = $database->prepare($query);
@@ -136,18 +138,58 @@ class ModelCompte {
  public static function checkCompte($label, $banque_id) {
   try {
    $database = Model::getInstance();
-   $query = "SELECT * FROM compte WHERE label=':label' AND banque_id = :banque_id";
+   $query = "SELECT * FROM compte WHERE label=:label AND banque_id = :banque_id";
    $statement = $database->prepare($query);
-   $statement->execute([
-    'label' => $label,
-    'banque_id' => $banque_id
-   ]);
+   $statement->bindValue('label', $label, PDO::PARAM_STR);
+   $statement->bindParam('banque_id', $banque_id, PDO::PARAM_INT);
+   $statement->execute();
    $results = $statement->fetchAll();
-   return $results;
+   if (!$results || empty($results)) {
+       return False;
+   }
+   return True;
   } catch (PDOException $e) {
    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
    return NULL;
   }
+ }
+ 
+ // prend la première id disponible après l'id max pour la création d'un compte
+ public static function fetchIdAvailable() {
+   try {
+    $database = Model::getInstance();
+    $query = "SELECT MAX(id) FROM compte";
+    $statement = $database->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchColumn();
+    $id = $results + 1;
+    return $id;
+   } catch (PDOException $e) {
+    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+    return NULL;
+   }
+ }
+ 
+ // crée le compte avec les attributs label et banque_id
+ public static function createCompte($label, $banque_id, $montant) {
+   try {
+    $compte_id = ModelCompte::fetchIdAvailable();
+    $personne_id = $_SESSION["id"];
+    $database = Model::getInstance();
+    $query = "INSERT INTO compte VALUES (:compte_id, :label, :montant, :banque_id, :personne_id)";
+    $statement = $database->prepare($query);
+    $statement->bindParam('compte_id', $compte_id, PDO::PARAM_INT);
+    $statement->bindValue('label', $label, PDO::PARAM_STR);
+    $statement->bindParam('montant', $montant, PDO::PARAM_INT);
+    $statement->bindParam('banque_id', $banque_id, PDO::PARAM_INT);
+    $statement->bindParam('personne_id', $personne_id, PDO::PARAM_INT);
+    $statement->execute();
+    $results = $statement->fetchAll();
+    return 1;
+   } catch (PDOException $e) {
+    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
+    return -1;
+   }
  }
  
  // retourne le montant max que l'on peut retirer du compte, c'est-à-dire son montant
@@ -158,7 +200,7 @@ class ModelCompte {
    $statement = $database->prepare($query);
    $statement->bindParam('compte_id', $compte_id, PDO::PARAM_INT);
    $statement->execute();
-   $results = $statement->fetchAll();
+   $results = $statement->fetchColumn();
    return $results;
   } catch (PDOException $e) {
    printf("%s - %s<p/>\n", $e->getCode(), $e->getMessage());
@@ -166,7 +208,7 @@ class ModelCompte {
   }
  }
  
- // Transferre un certain montant du compte de retrait au compte de dépôt
+ // Transferre un certain montant du compte de retrait au compte de dépôt de la même personne
  public static function transertIntoAccount($montant, $id1, $id2) {
   try {
    $database = Model::getInstance();
