@@ -100,7 +100,6 @@ class ModelConnexion {
  // connecte l'utilisateur et définit les variables de session
  public static function connect($login, $password) {
   try {
-   session_start();
    $database = Model::getInstance();
 
    // recherche de la valeur de la clé = max(id) + 1
@@ -133,7 +132,6 @@ class ModelConnexion {
  }
  
   public static function disconnect() {
-    session_start();
     session_destroy();
  }
  

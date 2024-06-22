@@ -121,25 +121,6 @@ class ControllerAdministrateur {
   $vue = $root . '/app/view/banque/viewAll.php';
   require ($vue);
  }
- 
- // --- Affichage sans doublons des régions
- public static function regionReadAll(){
-  $results = ModelProducteur::getAllRegion();
-  // ----- Construction chemin de la vue
-  include 'config.php';
-  $vue = $root . '/app/view/producteur/viewAllRegion.php';
-  require ($vue);
- }
-    
- // --- Affichage producteur par région
- public static function producteurReadNbByRegion(){
-  $results = ModelProducteur::getNbProdByRegion();
-  // ----- Construction chemin de la vue
-  include 'config.php';
-  $vue = $root . '/app/view/producteur/viewAllProdByRegion.php';
-  require ($vue);
- }
- 
 }
 ?>
 <!-- ----- fin ControllerAdministrateur -->

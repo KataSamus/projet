@@ -38,13 +38,6 @@ switch ($action) { //rajouter des arguments en fonction de si on est client ou a
  case "residenceReadAll" :
   ControllerAdministrateur::$action($args);
   break;
-// case "banqueReadAll" :
-// case "banqueCreate" :
-// case "banqueCreated" :
-// case "banqueReadId" :
-// case "banqueReadComptes" :
-//  ControllerBanque::$action();
-//  break;
  case "clientReadAllAccounts" :
  case "compteShowTransfertForm" :
  case "compteTransfered" :
@@ -63,6 +56,10 @@ switch ($action) { //rajouter des arguments en fonction de si on est client ou a
  case "AccountCreated" :
  case "Logout" :
   ControllerConnexion::$action();
+  break;
+ case "showMethodForm" :
+ case "banqueClassement" :
+  ControllerPatrimoine::$action($args);
   break;
 
  // Tache par défaut
