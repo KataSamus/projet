@@ -103,7 +103,7 @@ class ModelCompte {
  public static function getAll() {
   try {
    $database = Model::getInstance();
-   $query = "SELECT compte.label, compte.montant, banque.label, banque.pays, personne.prenom, personne.nom"
+   $query = $query = "SELECT compte.label, compte.montant, banque.label as banque, banque.pays, personne.prenom, personne.nom"
            . " FROM compte JOIN banque ON banque.id=compte.banque_id JOIN personne ON personne.id=compte.personne_id";
    $statement = $database->prepare($query);
    $statement->execute();
