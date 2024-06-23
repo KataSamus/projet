@@ -5,7 +5,7 @@ class ControllerPatrimoine {
     
     // affiche le formulaire pour la méthode de classement des banques
     public static function showMethodForm() {
-        $list_methods = array("montant_total" => "Montant Total", "nb_comptes" => "Nombre de comptes ouverts", "nb_clients" => "Nombre de clients");
+        $list_methods = array("montant_total" => "Par patrimoine total", "nb_comptes" => "Par popularité", "nb_clients" => "Par diversité");
         include 'config.php';
         $vue = $root . '/app/view/others/viewMethodForm.php';
         require ($vue);

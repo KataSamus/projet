@@ -30,7 +30,7 @@ require ($root . '/app/view/fragment/fragmentPatrimoineHeader.html');
             }
             ?>
         </select><br/>
-        <label class='w-25' for="prix">Prix de la résidence</label><br><input type="textbox" step='any' name='prix' id='prix' value='<?php echo($residence->getPrix()); ?>' style="width: 800px" readonly><br/>          
+        <label class='w-25' for="prix">Prix de la résidence</label><br><input type="textbox" step='any' name='prix' id='prix' value='<?php echo($residence->getPrix()); ?>' style="width: 200px" readonly><br/>          
       </div>
       <p/>
        <br/> 
